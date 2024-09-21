@@ -11,7 +11,7 @@ import com.SheetalCity.SheetalCity.repositories.UserDataRepository;
 @Service
 public class UserDataService {
 	@Autowired
-	private static UserDataRepository userDataRepository;
+	private UserDataRepository userDataRepository;
 	
 	public void userDataInsert() {
 	UserData userData = new UserData();
