@@ -43,9 +43,10 @@ public class UserData {
 	private String email;
 	
 	private String mobNo;
+	
 	@NotNull
 	@DefaultValue("true")
-	private boolean isActive;
+	private boolean isActive =true;
 	
 	private Date created_dt;
 	
@@ -55,6 +56,9 @@ public class UserData {
 	    public void prePersist() {
 	       if (updated_dt == null) {
 	    	   updated_dt = new Date();
+	       }
+	       if(created_dt == null) {
+	    	   created_dt = new Date();
 	       }
 	}
 }

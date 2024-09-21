@@ -8,8 +8,6 @@ import com.SheetalCity.SheetalCity.entity.UserData;
 @Repository
 public interface UserDataRepository extends JpaRepository<UserData,Integer>{
 	
-	List<UserData> findByFirstName(String firstName);
+	List<UserData> findByUsername(String firstName);
 	UserData findById(int id);
-	
-	
 }
