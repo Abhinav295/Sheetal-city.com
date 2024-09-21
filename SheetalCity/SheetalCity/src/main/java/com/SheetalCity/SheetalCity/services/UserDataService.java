@@ -7,9 +7,9 @@ import com.SheetalCity.SheetalCity.entity.UserData;
 import com.SheetalCity.SheetalCity.repositories.UserDataRepository;
 
 
-
 @Service
 public class UserDataService {
+
 	@Autowired
 	private UserDataRepository userDataRepository;
 	
