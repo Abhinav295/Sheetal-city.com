@@ -8,8 +8,6 @@ import org.springframework.stereotype.Service;
 import com.SheetalCity.SheetalCity.entity.UserData;
 import com.SheetalCity.SheetalCity.repositories.UserDataRepository;
 
-import freemarker.core.ReturnInstruction.Return;
-
 
 @Service
 public class UserDataService {
@@ -17,32 +15,27 @@ public class UserDataService {
 	@Autowired
 	private UserDataRepository userDataRepository;
 	
-	public void userDataInsert(UserData user) {
-	UserData userData = new UserData();
-	userData.setUsername("Abhinav");
-	userData.setPassword("b");
-	userData.setFirstName("Abhinav295");
-	userData.setLastName("Jain");
-	userData.setEmail("AbhinavJain295@gmail.com");
+	@Autowired
+	private UserLoginService userLoginService;
+	
+	public String userDataInsert(UserData user) {
 	userDataRepository.save(user);
-	System.out.println(userData.getFirstName());
+	userLoginService.loginInsert(user);
+	return user.getUsername();
 	}
 	
 	public void userDataDelete(String username) {
-		//Integer userId = Integer.parseInt(username);
 		List<UserData> userIds = userDataRepository.findByUsername(username);
-		//userDataRepository.deleteById(userId);
 		userDataRepository.deleteAll(userIds);
 	}
-	public List<UserData> userDataShow(String username) {
-		List<UserData> userD = userDataRepository.findByUsername(username);
-		return userD;
+	public List<UserData> userDataShow() {
+		List<UserData> userList = userDataRepository.findAll();
+		return userList;
 	}
-	public UserData userDataUpdate(int id) {
-		UserData user = userDataRepository.findById(id);
-		user.setUsername("Lulli");
-		userDataRepository.save(user);
-		return user;
+	public List<UserData> userDataUpdate(int id, UserData userData) {
+		userData.setId(id);
+		userDataRepository.save(userData);
+		return getUserData(userData.getUsername());
 	}
 	public List<UserData> getUserData(String username) {
 		return userDataRepository.findByUsername(username);
