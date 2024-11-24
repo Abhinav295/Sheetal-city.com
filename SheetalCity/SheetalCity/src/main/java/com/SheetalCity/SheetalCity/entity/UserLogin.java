@@ -39,4 +39,5 @@ public class UserLogin {
 	@NotNull
 	@DefaultValue("USER")
 	private String type;
+	
 }

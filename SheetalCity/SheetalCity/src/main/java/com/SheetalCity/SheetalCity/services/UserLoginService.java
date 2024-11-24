@@ -1,5 +1,7 @@
 package com.SheetalCity.SheetalCity.services;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +21,16 @@ public class UserLoginService {
 		login.setUsername(userData.getUsername());
 		login.setPassword(userData.getPassword());
 		userLoginRepository.save(login);
+	}
+	
+	public String authenticate(UserLogin user) {
+		userLoginRepository.findByUsername(user.getUsername());
+		return user.getUsername();
+	}
+	public List<UserLogin> getAllLoginCred(){
+		List<UserLogin> userList = userLoginRepository.findAll();
+		System.out.println(userList.get(0).getUsername());
+		return userList;
 	}
 
 }
