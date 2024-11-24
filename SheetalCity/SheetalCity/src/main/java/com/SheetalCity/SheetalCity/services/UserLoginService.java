@@ -24,8 +24,17 @@ public class UserLoginService {
 	}
 	
 	public String authenticate(UserLogin user) {
-		userLoginRepository.findByUsername(user.getUsername());
-		return user.getUsername();
+		List<UserLogin> userLoginCred = userLoginRepository.findByUsername(user.getUsername());
+		if(!userLoginCred.isEmpty()) {
+			if(userLoginCred.get(0).getUsername().equals( user.getUsername()) && userLoginCred.get(0).getPassword().equals(user.getPassword())) {
+				return user.getUsername();
+			}else {
+				return "";
+			}
+		}else {
+			return "";
+		}
+		
 	}
 	public List<UserLogin> getAllLoginCred(){
 		List<UserLogin> userList = userLoginRepository.findAll();

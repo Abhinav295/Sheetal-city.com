@@ -2,6 +2,9 @@ package com.SheetalCity.SheetalCity.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -61,8 +64,14 @@ public class Controllers {
 	}
 	
 	@PostMapping("/login")
-	public String login(@RequestBody UserLogin user) {
-		return loginService.authenticate(user);
+	public ResponseEntity<String> login(@RequestBody UserLogin user) {
+		String username = loginService.authenticate(user);
+		if(!username.isEmpty()) {
+			System.out.println(username);
+			return ResponseEntity.status(HttpStatus.OK).body(username);
+		}else {
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Inavlid User Name");
+		}
 	}
 	
 	@GetMapping("/getAllCred")
