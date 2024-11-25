@@ -20,6 +20,7 @@ public class UserLoginService {
 		UserLogin login = new UserLogin();
 		login.setUsername(userData.getUsername());
 		login.setPassword(userData.getPassword());
+		login.setType("User");
 		userLoginRepository.save(login);
 	}
 	
@@ -40,6 +41,20 @@ public class UserLoginService {
 		List<UserLogin> userList = userLoginRepository.findAll();
 		System.out.println(userList.get(0).getUsername());
 		return userList;
+	}
+
+	public String AddUserDetails(UserLogin user) {
+		userLoginRepository.save(user);
+		List<UserLogin> userLoginCred = userLoginRepository.findByUsername(user.getUsername());
+		if(!userLoginCred.isEmpty()) {
+			if(userLoginCred.get(0).getUsername().equals( user.getUsername()) && userLoginCred.get(0).getPassword().equals(user.getPassword())) {
+				return user.getUsername();
+			}else {
+				return "";
+			}
+		}else {
+			return "";
+		}
 	}
 
 }

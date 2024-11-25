@@ -65,4 +65,9 @@ public class UserData {
 	    	   created_dt = new Date();
 	       }
 	}
+
+	public String getUsername() {
+		// TODO Auto-generated method stub
+		return this.username;
+	}
 }

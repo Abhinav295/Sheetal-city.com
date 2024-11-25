@@ -74,6 +74,18 @@ public class Controllers {
 		}
 	}
 	
+	@PostMapping("/signup")
+	public ResponseEntity<String> signUp(@RequestBody UserLogin user) {
+		String username = loginService.AddUserDetails(user);
+		if(!username.isEmpty()) {
+			System.out.println(username);
+			return ResponseEntity.status(HttpStatus.OK).body(username);
+		}else {
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Inavlid User Name");
+		}
+	}
+	
+	
 	@GetMapping("/getAllCred")
 	public List<UserLogin> getAllCred(){
 		return loginService.getAllLoginCred();
