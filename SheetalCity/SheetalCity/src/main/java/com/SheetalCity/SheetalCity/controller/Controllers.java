@@ -1,4 +1,5 @@
 package com.SheetalCity.SheetalCity.controller;
+import java.net.http.HttpResponse.BodyHandler;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,10 +33,15 @@ public class Controllers {
 	UserLoginService loginService;
 	
 	@PostMapping("/addUser")
-	public String addUser(@RequestBody UserData userData) {
+	public ResponseEntity<String> addUser(@RequestBody UserData userData) {
 		String username = user.userDataInsert(userData);
 		System.out.println("-------------------Inside the insert block----------------------");
-		return username;
+		if(!username.isEmpty()) {
+			System.out.println(username);
+			return ResponseEntity.status(HttpStatus.OK).body(username);
+		}else {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error Occured");
+		}
 	}
 	
 	@GetMapping("/getUser/{username}")
@@ -43,18 +49,22 @@ public class Controllers {
 		return user.getUserData(username);
 	}
 	
-	@DeleteMapping("/deleteUser/{username}")
-	public String deleteUser(@PathVariable("username") String username) {
-		user.userDataDelete(username);
+	@DeleteMapping("/deleteUser/{id}")
+	public ResponseEntity<String> deleteUser(@PathVariable("id") int id) {
+		boolean isDeleted = user.userDataDelete(id);
 		System.out.println("-------------------Inside the Delete Block----------------------");
-		return "static/index.html";
+		if(isDeleted) {
+			return ResponseEntity.status(HttpStatus.OK).body("Deleted Successfully");
+		}else {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Inavlid User Name");
+		}
 	}
 	
 	@GetMapping("/getAllUsers")
-	public List<UserData> healthCheck(){
+	public ResponseEntity<List<UserData>> healthCheck(){
 		List<UserData>userD = user.userDataShow();
 		System.out.println("-------------------Inside the Health check----------------------");
-		return userD;
+		return ResponseEntity.status(HttpStatus.OK).body(userD);
 	}
 	
 	@PutMapping("/update/{id}")

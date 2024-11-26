@@ -24,9 +24,9 @@ public class UserDataService {
 	return user.getUsername();
 	}
 	
-	public void userDataDelete(String username) {
-		List<UserData> userIds = userDataRepository.findByUsername(username);
-		userDataRepository.deleteAll(userIds);
+	public boolean userDataDelete(int id) {
+		userDataRepository.deleteById(id);
+		return !userDataRepository.existsById(id);
 	}
 	public List<UserData> userDataShow() {
 		List<UserData> userList = userDataRepository.findAll();
