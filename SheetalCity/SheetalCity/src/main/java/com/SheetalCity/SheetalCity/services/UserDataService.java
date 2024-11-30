@@ -8,8 +8,11 @@ import org.springframework.stereotype.Service;
 import com.SheetalCity.SheetalCity.entity.UserData;
 import com.SheetalCity.SheetalCity.repositories.UserDataRepository;
 
+import jakarta.transaction.Transactional;
+
 
 @Service
+@Transactional
 public class UserDataService {
 
 	@Autowired
@@ -25,6 +28,11 @@ public class UserDataService {
 	}
 	
 	public boolean userDataDelete(int id) {
+		UserData user =userDataRepository.findById(id);
+		boolean isLoginDeleted = false;
+		if(user!=null) {
+			isLoginDeleted = userLoginService.deleteLogin(user.getUsername());
+		}
 		userDataRepository.deleteById(id);
 		return !userDataRepository.existsById(id);
 	}

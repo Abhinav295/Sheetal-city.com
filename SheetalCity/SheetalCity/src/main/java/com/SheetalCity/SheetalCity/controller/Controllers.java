@@ -16,8 +16,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.SheetalCity.SheetalCity.entity.CityDetails;
 import com.SheetalCity.SheetalCity.entity.UserData;
 import com.SheetalCity.SheetalCity.entity.UserLogin;
+import com.SheetalCity.SheetalCity.services.CityDataService;
 import com.SheetalCity.SheetalCity.services.UserDataService;
 import com.SheetalCity.SheetalCity.services.UserLoginService;
 
@@ -31,6 +33,9 @@ public class Controllers {
 	
 	@Autowired
 	UserLoginService loginService;
+	
+	@Autowired
+	CityDataService cityDataService;
 	
 	@PostMapping("/addUser")
 	public ResponseEntity<String> addUser(@RequestBody UserData userData) {
@@ -92,6 +97,17 @@ public class Controllers {
 			return ResponseEntity.status(HttpStatus.OK).body(username);
 		}else {
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Inavlid User Name");
+		}
+	}
+	
+	@PostMapping("/city/addCity")
+	public ResponseEntity<String> addCity(@RequestBody CityDetails city) {
+		String cityName = cityDataService.addNewCity(city);
+		if(!cityName.isEmpty()) {
+			System.out.println(cityName);
+			return ResponseEntity.status(HttpStatus.OK).body(cityName);
+		}else {
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("City is Not Added Try Again");
 		}
 	}
 	

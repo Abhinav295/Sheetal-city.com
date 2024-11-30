@@ -25,6 +25,7 @@ public class CityDetails {
 	@Column(name="city_id")
 	private int id;
 	
+	private String cityName;
 	private double rsPerUnit;
 	private double maintenancePerMonth;
 }

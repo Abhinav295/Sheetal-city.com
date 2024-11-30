@@ -9,7 +9,10 @@ import com.SheetalCity.SheetalCity.entity.UserData;
 import com.SheetalCity.SheetalCity.entity.UserLogin;
 import com.SheetalCity.SheetalCity.repositories.UserLoginRepository;
 
+import jakarta.transaction.Transactional;
+
 @Service
+@Transactional
 public class UserLoginService {
 
 	@Autowired
@@ -55,6 +58,11 @@ public class UserLoginService {
 		}else {
 			return "";
 		}
+	}
+
+	public boolean deleteLogin(String username) {
+		userLoginRepository.deleteByUsername(username);
+		return !userLoginRepository.existsByUsername(username);
 	}
 
 }
