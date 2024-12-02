@@ -16,10 +16,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.SheetalCity.SheetalCity.dto.HouseMappingDTO;
 import com.SheetalCity.SheetalCity.entity.CityDetails;
+import com.SheetalCity.SheetalCity.entity.HouseMapping;
 import com.SheetalCity.SheetalCity.entity.UserData;
 import com.SheetalCity.SheetalCity.entity.UserLogin;
 import com.SheetalCity.SheetalCity.services.CityDataService;
+import com.SheetalCity.SheetalCity.services.HouseMappingService;
 import com.SheetalCity.SheetalCity.services.UserDataService;
 import com.SheetalCity.SheetalCity.services.UserLoginService;
 
@@ -36,6 +39,9 @@ public class Controllers {
 	
 	@Autowired
 	CityDataService cityDataService;
+	
+	@Autowired
+	HouseMappingService houseMappingService;
 	
 	@PostMapping("/addUser")
 	public ResponseEntity<String> addUser(@RequestBody UserData userData) {
@@ -66,7 +72,7 @@ public class Controllers {
 	}
 	
 	@GetMapping("/getAllUsers")
-	public ResponseEntity<List<UserData>> healthCheck(){
+	public ResponseEntity<List<UserData>> getAllUsers(){
 		List<UserData>userD = user.userDataShow();
 		System.out.println("-------------------Inside the Health check----------------------");
 		return ResponseEntity.status(HttpStatus.OK).body(userD);
@@ -109,6 +115,25 @@ public class Controllers {
 		}else {
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("City is Not Added Try Again");
 		}
+	}
+	
+	@GetMapping("/city/getAllCities")
+	public ResponseEntity<List<CityDetails>> getAllCities(){
+		List<CityDetails>cityDetails = cityDataService.getCitiesDetails();
+		System.out.println("-------------------Inside the Health check----------------------");
+		return ResponseEntity.status(HttpStatus.OK).body(cityDetails);
+	}
+	
+	@PutMapping("city/updateCity")
+	public ResponseEntity<CityDetails> updateCity(@RequestBody CityDetails city){
+		city = cityDataService.UpdateCityDetails(city);
+		return ResponseEntity.status(HttpStatus.OK).body(city);
+	}
+	
+	@PostMapping("house/RegisterHouse")
+	public ResponseEntity<Integer> registerHouse(@RequestBody HouseMappingDTO HM){
+		houseMappingService.registerHouse(HM);
+		return ResponseEntity.status(HttpStatus.OK).body(HM.getHouseNo());
 	}
 	
 	

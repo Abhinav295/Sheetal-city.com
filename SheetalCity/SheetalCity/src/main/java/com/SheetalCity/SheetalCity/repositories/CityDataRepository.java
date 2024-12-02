@@ -11,5 +11,6 @@ import com.SheetalCity.SheetalCity.entity.CityDetails;
 public interface CityDataRepository extends JpaRepository<CityDetails,Integer>{
 
 	List<CityDetails> findByCityName(String cityName);
+	CityDetails findById(int id);
 
 }

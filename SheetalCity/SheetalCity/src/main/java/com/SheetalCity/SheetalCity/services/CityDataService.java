@@ -1,6 +1,7 @@
 package com.SheetalCity.SheetalCity.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,6 +27,6 @@ public class CityDataService {
 	
 	public CityDetails UpdateCityDetails(CityDetails city) {
 		cityDataRepository.save(city);
-		return cityDataRepository.getById(city.getId());
+		return cityDataRepository.findById(city.getId());
 	}
 }
