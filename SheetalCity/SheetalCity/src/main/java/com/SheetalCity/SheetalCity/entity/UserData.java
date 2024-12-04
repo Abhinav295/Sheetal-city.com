@@ -56,6 +56,11 @@ public class UserData {
 	
 	private Date updated_dt;
 	
+	@NotNull
+	private double AdvanceMaintenance;
+	@NotNull
+	private double AdvanceElectric;
+	
 	@PrePersist
 	    public void prePersist() {
 	       if (updated_dt == null) {

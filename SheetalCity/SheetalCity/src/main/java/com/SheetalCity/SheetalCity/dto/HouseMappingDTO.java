@@ -22,5 +22,7 @@ public class HouseMappingDTO {
 	private String block;
 	private List<CityDetails> cityDetails;
 	private List<UserData> userDetails;
+	private double DueMaintenance = 0;
+	private double DueElectric = 0;
 
 }

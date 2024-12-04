@@ -1,6 +1,8 @@
 package com.SheetalCity.SheetalCity.entity;
 
-import jakarta.persistence.Column;
+
+import java.util.Date;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -8,7 +10,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import jakarta.persistence.UniqueConstraint;
+
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -21,33 +23,53 @@ import lombok.Setter;
 @AllArgsConstructor
 
 @Entity
-@Table(name = "house_info",uniqueConstraints = @UniqueConstraint(columnNames= {"house_no","block","city_id"}))
-
-public class HouseMapping {
+@Table(name = "ledger_info")
+public class LedgerDetails {
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name="house_id")
 	private long id;
 	
 	@NotNull
-	@Column(name="house_no")
-	private int houseNo;
+	private String slipNo;
+	
+	private String paymentStatus;
 	
 	@NotNull
-	@Column(name="block")
-	private String block;
+	private double maintenanceBill;
 	
-	@ManyToOne
-	@JoinColumn(name="city_id")
-	private CityDetails cityDetails;
-	
-	@ManyToOne
-	@JoinColumn(name="user_id")
-	private UserData userDetails;
+	@NotNull
+	private double electricityBill;
 	
 	@NotNull
 	private double dueMaintenance;
 	
 	@NotNull
 	private double dueElectric;
+	
+	@NotNull
+	private double advanceElectric;
+	
+	@NotNull
+	private double advanceMaintenance;
+	
+	@NotNull
+	private double totalElectricBill;
+	
+	@NotNull
+	private double totalMaintenanceBill;
+	
+	@NotNull
+	private double totalBill;
+	
+	private Date created_dt;
+	private Date updated_dt;
+	
+	@ManyToOne
+	@JoinColumn(name="user_id")
+	private UserData user;
+	
+	@ManyToOne
+	@JoinColumn(name="house_id")
+	private HouseMapping housemapping;
 }

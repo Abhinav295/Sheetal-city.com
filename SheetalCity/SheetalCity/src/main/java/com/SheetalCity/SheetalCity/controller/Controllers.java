@@ -78,11 +78,12 @@ public class Controllers {
 		return ResponseEntity.status(HttpStatus.OK).body(userD);
 	}
 	
-	@PutMapping("/update/{id}")
+	@PutMapping("/updateUser/{id}")
 	public List<UserData> updateUser(@PathVariable("id") String id,@RequestBody UserData userData) {
 		System.out.println("-------------------Inside the update the block----------------------");
 		return user.userDataUpdate(Integer.parseInt(id), userData);
 	}
+	
 	
 	@PostMapping("/login")
 	public ResponseEntity<String> login(@RequestBody UserLogin user) {
@@ -134,6 +135,12 @@ public class Controllers {
 	public ResponseEntity<Integer> registerHouse(@RequestBody HouseMappingDTO HM){
 		houseMappingService.registerHouse(HM);
 		return ResponseEntity.status(HttpStatus.OK).body(HM.getHouseNo());
+	}
+	
+	@GetMapping("house/getAllRegisterdHouse")
+	public ResponseEntity<List<HouseMapping>> getAllRegisterdHouse(){
+		List<HouseMapping> allRegisterdHouse = houseMappingService.getAllHouseRegisteration();
+		return ResponseEntity.status(HttpStatus.OK).body(allRegisterdHouse);
 	}
 	
 	
