@@ -4,8 +4,10 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.support.incrementer.AbstractDataFieldMaxValueIncrementer;
 import org.springframework.stereotype.Service;
 
+import com.SheetalCity.SheetalCity.dto.AdvancePaymentDTO;
 import com.SheetalCity.SheetalCity.entity.UserData;
 import com.SheetalCity.SheetalCity.repositories.UserDataRepository;
 
@@ -56,5 +58,14 @@ public class UserDataService {
 	}
 	public List<UserData> getUserData(String username) {
 		return userDataRepository.findByUsername(username);
+	}
+
+	public void updateAdvancePayment(AdvancePaymentDTO advanePayment) {
+		UserData user = userDataRepository.findById(advanePayment.getUserId());
+		user.setAdvanceElectric(advanePayment.getAdvanceElectricPayment());
+		user.setAdvanceMaintenance(advanePayment.getAdvanceMaintenancePayment());
+		user.setUpdated_dt(new Date());
+		
+		
 	}
 }

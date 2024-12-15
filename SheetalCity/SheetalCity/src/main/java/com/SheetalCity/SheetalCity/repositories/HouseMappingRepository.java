@@ -1,5 +1,7 @@
 package com.SheetalCity.SheetalCity.repositories;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -15,6 +17,9 @@ public interface HouseMappingRepository extends JpaRepository<HouseMapping,Integ
 
 	@Query("Select houseNo from HouseMapping where houseNo=?1 and block=?2 and cityDetails=?3")
 	int findByHouseMapping(int houseNo,String block,CityDetails city);
+	
+	@Query("Select hm from HouseMapping hm where hm.userDetails.id = ?1")
+	List<HouseMapping> findByUserId(int userId);
 	
 	@Modifying
 	@Transactional

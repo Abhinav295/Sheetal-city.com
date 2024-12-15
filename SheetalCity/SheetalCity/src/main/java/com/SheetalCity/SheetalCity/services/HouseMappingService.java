@@ -38,5 +38,9 @@ public class HouseMappingService {
 	public List<HouseMapping> getAllHouseRegisteration (){
 		return houseMappingRepository.findAll();
 	}
+
+	public List<HouseMapping> getHouseRegisteration(int id) {
+		return houseMappingRepository.findByUserId(id);
+	}
 	
 }

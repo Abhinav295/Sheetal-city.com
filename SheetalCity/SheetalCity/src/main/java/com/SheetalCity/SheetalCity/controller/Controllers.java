@@ -16,11 +16,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.SheetalCity.SheetalCity.dto.AdvancePaymentDTO;
 import com.SheetalCity.SheetalCity.dto.HouseMappingDTO;
 import com.SheetalCity.SheetalCity.entity.CityDetails;
 import com.SheetalCity.SheetalCity.entity.HouseMapping;
 import com.SheetalCity.SheetalCity.entity.UserData;
 import com.SheetalCity.SheetalCity.entity.UserLogin;
+import com.SheetalCity.SheetalCity.services.BillGenerationService;
 import com.SheetalCity.SheetalCity.services.CityDataService;
 import com.SheetalCity.SheetalCity.services.HouseMappingService;
 import com.SheetalCity.SheetalCity.services.UserDataService;
@@ -42,6 +44,9 @@ public class Controllers {
 	
 	@Autowired
 	HouseMappingService houseMappingService;
+	
+	@Autowired
+	BillGenerationService billGenerationService;
 	
 	@PostMapping("/addUser")
 	public ResponseEntity<String> addUser(@RequestBody UserData userData) {
@@ -143,10 +148,21 @@ public class Controllers {
 		return ResponseEntity.status(HttpStatus.OK).body(allRegisterdHouse);
 	}
 	
+	@GetMapping("house/getRegisterdHouse/{id}")
+	public ResponseEntity<List<HouseMapping>> getRegisterdHouse(@PathVariable("id") int id){
+		List<HouseMapping> allRegisterdHouse = houseMappingService.getHouseRegisteration(id);
+		return ResponseEntity.status(HttpStatus.OK).body(allRegisterdHouse);
+	}
 	
 	@GetMapping("/getAllCred")
 	public List<UserLogin> getAllCred(){
 		return loginService.getAllLoginCred();
+	}
+	
+	@PostMapping("/pay/advancePayment")
+	public int advancePayment(@RequestBody AdvancePaymentDTO advanePayment) {
+		billGenerationService.generatePaymentBill(advanePayment);
+		return 9;
 	}
 	
 }

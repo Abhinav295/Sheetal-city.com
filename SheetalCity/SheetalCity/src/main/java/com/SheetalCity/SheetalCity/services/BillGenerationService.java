@@ -3,14 +3,18 @@ package com.SheetalCity.SheetalCity.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.SheetalCity.SheetalCity.dto.AdvancePaymentDTO;
 import com.SheetalCity.SheetalCity.repositories.LedgerDetailsRepositories;
+import com.SheetalCity.SheetalCity.repositories.UserDataRepository;
 
 @Service
-
 public class BillGenerationService {
 	
 	@Autowired
 	LedgerDetailsRepositories ledgerDetailsRepositories;
+	
+	@Autowired
+	UserDataService userDataService;
 	
 	public void GenerateBillAutomatic() {
 		
@@ -39,5 +43,8 @@ public class BillGenerationService {
 	}
 	public String getSlipNo() {
 		return "";
+	}
+	public void generatePaymentBill(AdvancePaymentDTO advanePayment) {
+		userDataService.updateAdvancePayment(advanePayment);
 	}
 }
