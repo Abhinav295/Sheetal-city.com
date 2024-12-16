@@ -60,12 +60,12 @@ public class UserDataService {
 		return userDataRepository.findByUsername(username);
 	}
 
-	public void updateAdvancePayment(AdvancePaymentDTO advanePayment) {
+	public UserData updateAdvancePayment(AdvancePaymentDTO advanePayment) {
 		UserData user = userDataRepository.findById(advanePayment.getUserId());
-		user.setAdvanceElectric(advanePayment.getAdvanceElectricPayment());
-		user.setAdvanceMaintenance(advanePayment.getAdvanceMaintenancePayment());
+		user.setAdvanceElectric(user.getAdvanceElectric()+advanePayment.getAdvanceElectricPayment());
+		user.setAdvanceMaintenance(user.getAdvanceMaintenance()+advanePayment.getAdvanceMaintenancePayment());
 		user.setUpdated_dt(new Date());
-		
-		
+		userDataRepository.save(user);
+		return user;
 	}
 }

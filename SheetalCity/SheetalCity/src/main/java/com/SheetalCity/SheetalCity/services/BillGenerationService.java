@@ -4,7 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.SheetalCity.SheetalCity.dto.AdvancePaymentDTO;
+import com.SheetalCity.SheetalCity.entity.PaymentDetails;
+import com.SheetalCity.SheetalCity.entity.UserData;
 import com.SheetalCity.SheetalCity.repositories.LedgerDetailsRepositories;
+import com.SheetalCity.SheetalCity.repositories.PaymentDetailsRepository;
 import com.SheetalCity.SheetalCity.repositories.UserDataRepository;
 
 @Service
@@ -15,6 +18,9 @@ public class BillGenerationService {
 	
 	@Autowired
 	UserDataService userDataService;
+	
+	@Autowired
+	PaymentDetailsRepository paymentDetailsRepository;
 	
 	public void GenerateBillAutomatic() {
 		
@@ -45,6 +51,11 @@ public class BillGenerationService {
 		return "";
 	}
 	public void generatePaymentBill(AdvancePaymentDTO advanePayment) {
-		userDataService.updateAdvancePayment(advanePayment);
+		PaymentDetails payment = new PaymentDetails();
+		payment.setElectricPayment(advanePayment.getAdvanceElectricPayment());
+		payment.setMainteancePaument(advanePayment.getAdvanceMaintenancePayment());
+		payment.setTotalPayment(advanePayment.getAdvanceElectricPayment()+advanePayment.getAdvanceMaintenancePayment());
+		payment.setUser(userDataService.updateAdvancePayment(advanePayment));
+		paymentDetailsRepository.save(payment);
 	}
 }
