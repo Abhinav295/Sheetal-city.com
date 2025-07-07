@@ -9,6 +9,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.PostPersist;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 
 import jakarta.validation.constraints.NotNull;
@@ -42,24 +44,6 @@ public class LedgerDetails {
 	private double electricityBill;
 	
 	@NotNull
-	private double dueMaintenance;
-	
-	@NotNull
-	private double dueElectric;
-	
-	@NotNull
-	private double advanceElectric;
-	
-	@NotNull
-	private double advanceMaintenance;
-	
-	@NotNull
-	private double totalElectricBill;
-	
-	@NotNull
-	private double totalMaintenanceBill;
-	
-	@NotNull
 	private double totalBill;
 	
 	private Date created_dt;
@@ -72,4 +56,14 @@ public class LedgerDetails {
 	@ManyToOne
 	@JoinColumn(name="house_id")
 	private HouseMapping housemapping;
+	
+	@PrePersist
+    public void prePersist() {
+       if (updated_dt == null) {
+    	   updated_dt = new Date();
+       }
+       if(created_dt == null) {
+    	   created_dt = new Date();
+       }
+	}
 }

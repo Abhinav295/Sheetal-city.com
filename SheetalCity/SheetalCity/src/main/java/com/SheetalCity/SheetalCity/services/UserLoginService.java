@@ -1,5 +1,7 @@
 package com.SheetalCity.SheetalCity.services;
 
+import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,7 +48,7 @@ public class UserLoginService {
 		return userList;
 	}
 
-	public String AddUserDetails(UserLogin user) {
+	public String AddUserDetails(UserLogin user) throws SQLIntegrityConstraintViolationException, SQLException {
 		userLoginRepository.save(user);
 		List<UserLogin> userLoginCred = userLoginRepository.findByUsername(user.getUsername());
 		if(!userLoginCred.isEmpty()) {

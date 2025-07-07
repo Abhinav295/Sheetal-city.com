@@ -16,8 +16,14 @@ public class CityDataService {
 	private CityDataRepository cityDataRepository;
 	
 	public String addNewCity(CityDetails newCity) {
-		cityDataRepository.save(newCity);
-		List<CityDetails> city =  cityDataRepository.findByCityName(newCity.getCityName());
+		List<CityDetails> city;
+		try {
+			cityDataRepository.save(newCity);
+			city =  cityDataRepository.findByCityName(newCity.getCityName());
+		}catch(Exception e) {
+			e.printStackTrace();
+			return "";
+		}
 		return city.get(0).getCityName();
 	}
 

@@ -1,5 +1,7 @@
 package com.SheetalCity.SheetalCity.entity;
 
+import jakarta.persistence.UniqueConstraint;
+import jakarta.validation.constraints.NotNull;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -17,7 +19,7 @@ import lombok.Setter;
 @AllArgsConstructor
 
 @Entity
-@Table(name = "city_details")
+@Table(name = "city_details", uniqueConstraints = @UniqueConstraint(columnNames= {"cityName"}))
 public class CityDetails {
 
 	@Id
@@ -25,7 +27,9 @@ public class CityDetails {
 	@Column(name="city_id")
 	private int id;
 	
+	@NotNull
 	private String cityName;
+	
 	private double rsPerUnit;
 	private double maintenancePerMonth;
 }

@@ -1,5 +1,6 @@
 package com.SheetalCity.SheetalCity.controller;
-import java.net.http.HttpResponse.BodyHandler;
+import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -97,18 +98,26 @@ public class Controllers {
 			System.out.println(username);
 			return ResponseEntity.status(HttpStatus.OK).body(username);
 		}else {
-			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Inavlid User Name");
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Inavlid User Name and Password");
 		}
 	}
 	
 	@PostMapping("/signup")
 	public ResponseEntity<String> signUp(@RequestBody UserLogin user) {
+		try {
 		String username = loginService.AddUserDetails(user);
 		if(!username.isEmpty()) {
 			System.out.println(username);
-			return ResponseEntity.status(HttpStatus.OK).body(username);
+			return ResponseEntity.status(HttpStatus.ACCEPTED).body(username);
 		}else {
-			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Inavlid User Name");
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Duplicate Entry Present");
+		}
+		}catch(SQLIntegrityConstraintViolationException e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Duplicate Entry Present");
+		}catch(SQLException e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Duplicate Entry Present");
+		}catch(Exception e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Duplicate Entry Present");
 		}
 	}
 	
@@ -116,10 +125,9 @@ public class Controllers {
 	public ResponseEntity<String> addCity(@RequestBody CityDetails city) {
 		String cityName = cityDataService.addNewCity(city);
 		if(!cityName.isEmpty()) {
-			System.out.println(cityName);
 			return ResponseEntity.status(HttpStatus.OK).body(cityName);
 		}else {
-			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("City is Not Added Try Again");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("City Is Already Present");
 		}
 	}
 	
@@ -138,7 +146,10 @@ public class Controllers {
 	
 	@PostMapping("house/RegisterHouse")
 	public ResponseEntity<Integer> registerHouse(@RequestBody HouseMappingDTO HM){
-		houseMappingService.registerHouse(HM);
+		int response = houseMappingService.registerHouse(HM);
+		if(response == 0){
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+		}
 		return ResponseEntity.status(HttpStatus.OK).body(HM.getHouseNo());
 	}
 	

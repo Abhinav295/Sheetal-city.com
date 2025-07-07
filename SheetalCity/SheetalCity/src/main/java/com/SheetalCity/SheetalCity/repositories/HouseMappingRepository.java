@@ -21,6 +21,9 @@ public interface HouseMappingRepository extends JpaRepository<HouseMapping,Integ
 	@Query("Select hm from HouseMapping hm where hm.userDetails.id = ?1")
 	List<HouseMapping> findByUserId(int userId);
 	
+	@Query("Select hm from HouseMapping hm where hm.dueMaintenance > 0 or hm.dueElectric > 0")
+	List<HouseMapping> findByDueMaintenanceOrDueElectric();
+	
 	@Modifying
 	@Transactional
 	@Query("DELETE FROM HouseMapping hm where hm.userDetails.id = ?1")
