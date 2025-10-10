@@ -91,36 +91,6 @@ public class Controllers {
 	}
 	
 	
-	@PostMapping("/login")
-	public ResponseEntity<String> login(@RequestBody UserLogin user) {
-		String username = loginService.authenticate(user);
-		if(!username.isEmpty()) {
-			System.out.println(username);
-			return ResponseEntity.status(HttpStatus.OK).body(username);
-		}else {
-			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Inavlid User Name and Password");
-		}
-	}
-	
-	@PostMapping("/signup")
-	public ResponseEntity<String> signUp(@RequestBody UserLogin user) {
-		try {
-		String username = loginService.AddUserDetails(user);
-		if(!username.isEmpty()) {
-			System.out.println(username);
-			return ResponseEntity.status(HttpStatus.ACCEPTED).body(username);
-		}else {
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Duplicate Entry Present");
-		}
-		}catch(SQLIntegrityConstraintViolationException e) {
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Duplicate Entry Present");
-		}catch(SQLException e) {
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Duplicate Entry Present");
-		}catch(Exception e) {
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Duplicate Entry Present");
-		}
-	}
-	
 	@PostMapping("/city/addCity")
 	public ResponseEntity<String> addCity(@RequestBody CityDetails city) {
 		String cityName = cityDataService.addNewCity(city);
@@ -133,6 +103,7 @@ public class Controllers {
 	
 	@GetMapping("/city/getAllCities")
 	public ResponseEntity<List<CityDetails>> getAllCities(){
+		System.out.println("-------------------Inside the City check----------------------");
 		List<CityDetails>cityDetails = cityDataService.getCitiesDetails();
 		System.out.println("-------------------Inside the Health check----------------------");
 		return ResponseEntity.status(HttpStatus.OK).body(cityDetails);

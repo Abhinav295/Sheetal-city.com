@@ -24,6 +24,7 @@ import lombok.Setter;
 @Entity
 @Table(name = "users_login")
 public class UserLogin {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name="id")
@@ -39,5 +40,10 @@ public class UserLogin {
 	@NotNull
 	@DefaultValue("USER")
 	private String type;
+	
+	@Override
+	public String toString() {
+		return "UserLogin [id=" + id + ", username=" + username + ", password=" + password + ", type=" + type + "]";
+	}
 	
 }
