@@ -8,6 +8,8 @@ import org.springframework.jdbc.support.incrementer.AbstractDataFieldMaxValueInc
 import org.springframework.stereotype.Service;
 
 import com.SheetalCity.SheetalCity.dto.AdvancePaymentDTO;
+import com.SheetalCity.SheetalCity.dto.AuthUserRequest;
+import com.SheetalCity.SheetalCity.dto.UserDataRequest;
 import com.SheetalCity.SheetalCity.entity.UserData;
 import com.SheetalCity.SheetalCity.repositories.UserDataRepository;
 
@@ -27,10 +29,18 @@ public class UserDataService {
 	@Autowired
 	private HouseMappingService houseMappingService;
 	
-	public String userDataInsert(UserData user) {
-	userDataRepository.save(user);
-	userLoginService.loginInsert(user);
-	return user.getUsername();
+	public String userDataInsert(UserDataRequest userDataRequest) throws Exception {
+	UserData userData = new UserData();
+	userData.setUsername(userDataRequest.getUsername());
+	userData.setPassword(userDataRequest.getPassword());
+	userData.setFirstName(userDataRequest.getFirstName());
+	userData.setLastName(userDataRequest.getLastName());
+	userData.setEmail(userDataRequest.getEmail());
+	userData.setMobNo(userDataRequest.getMobNo());
+	userData.setActive(false);
+	UserData userDataResponse = userDataRepository.save(userData);
+	userLoginService.AddUserDetails(new AuthUserRequest(userDataResponse.getUsername(),userDataResponse.getPassword(),"USER"));
+	return userData.getUsername();
 	}
 	
 	public boolean userDataDelete(int id) {
