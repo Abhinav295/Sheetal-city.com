@@ -33,10 +33,10 @@ public class AuthController {
 	public ResponseEntity<?> signUp(@RequestBody AuthUserRequest user) {
 		try {
 		String username = loginService.AddUserDetails(user);
+
 		System.out.println(username);
 		if(!user.getUsername().isEmpty()) {
-			System.out.println(username);
-			return ResponseEntity.status(HttpStatus.ACCEPTED).body(username);
+			return login(user);
 		}else {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Duplicate Entry Present");
 		}

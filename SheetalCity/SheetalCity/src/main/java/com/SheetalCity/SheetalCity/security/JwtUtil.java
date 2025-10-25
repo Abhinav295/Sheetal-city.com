@@ -18,7 +18,7 @@ public class JwtUtil {
 	@Value("${jwt.secret}")
 	private String SECRET_KEY;
 
-	public static final long JWT_TOKEN_VALIDITY = 60;
+	public static final long JWT_TOKEN_VALIDITY = 60*60;
 
 	public String generateToken(String username) {
 		return Jwts.builder().subject(username).issuedAt(new Date(System.currentTimeMillis()))
