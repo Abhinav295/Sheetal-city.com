@@ -22,7 +22,7 @@ import com.SheetalCity.SheetalCity.services.UserDataService;
 
 @RestController
 @RequestMapping("sheetal.city")
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "http://${react.host.url}:${react.port}")
 public class UserController {
 	@Autowired
 	UserDataService user;

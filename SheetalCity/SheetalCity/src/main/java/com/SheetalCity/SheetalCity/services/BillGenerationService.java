@@ -16,7 +16,6 @@ import com.SheetalCity.SheetalCity.entity.UserData;
 import com.SheetalCity.SheetalCity.repositories.HouseMappingRepository;
 import com.SheetalCity.SheetalCity.repositories.LedgerDetailsRepositories;
 import com.SheetalCity.SheetalCity.repositories.PaymentDetailsRepository;
-import com.SheetalCity.SheetalCity.repositories.UserDataRepository;
 
 @Service
 public class BillGenerationService {
@@ -26,9 +25,6 @@ public class BillGenerationService {
 	
 	@Autowired
 	HouseMappingRepository houseMappingRepository;
-	
-	@Autowired
-	UserDataRepository userDataRepository;
 	
 	@Autowired
 	UserDataService userDataService;
@@ -85,7 +81,7 @@ public class BillGenerationService {
 		List<UserData> allUsersToSave = dueMap.values().stream().flatMap(List::stream).map(LedgerDetails::getUser).collect(Collectors.toList());
 		ledgerDetailsRepositories.saveAll(alllLedgerListToSave);
 		houseMappingRepository.saveAll(allHouseMappingstoSave);
-		userDataRepository.saveAll(allUsersToSave);
+		userDataService.updateAllUsers(allUsersToSave);
 		System.out.println("Settelment is Completed");
 	}
 	public void generatePaymentBill(AdvancePaymentDTO advanePayment) {
@@ -95,5 +91,27 @@ public class BillGenerationService {
 		payment.setTotalPayment(advanePayment.getAdvanceElectricPayment()+advanePayment.getAdvanceMaintenancePayment());
 		payment.setUser(userDataService.updateAdvancePayment(advanePayment));
 		paymentDetailsRepository.save(payment);
+	}
+	public void generateDueForAllCustomers(Double avgUnits) {
+		List<HouseMapping> houseMappings = houseMappingRepository.findAll();
+		houseMappings.stream().forEach(houseMapping->{
+			if(houseMapping.getUserDetails().isActive()) {
+				houseMapping.getCityDetails().getMaintenancePerMonth();
+				houseMapping.getCityDetails().getRsPerUnit();
+				houseMapping.setDueMaintenance(houseMapping.getDueMaintenance()+houseMapping.getCityDetails().getMaintenancePerMonth());
+				houseMapping.setDueElectric(houseMapping.getDueElectric()+(houseMapping.getCityDetails().getRsPerUnit()*avgUnits));
+			}
+		});
+		List<HouseMapping> updatedHouseMappings = houseMappings.stream().map(houseMapping->{
+			if(houseMapping.getUserDetails().isActive()) {
+				houseMapping.getCityDetails().getMaintenancePerMonth();
+				houseMapping.getCityDetails().getRsPerUnit();
+				houseMapping.setDueMaintenance(houseMapping.getDueMaintenance()+houseMapping.getCityDetails().getMaintenancePerMonth());
+				houseMapping.setDueElectric(houseMapping.getDueElectric()+(houseMapping.getCityDetails().getRsPerUnit()*avgUnits));
+			}
+			return houseMapping;
+		}).collect(Collectors.toList());
+		
+		houseMappingRepository.saveAll(updatedHouseMappings);
 	}
 }

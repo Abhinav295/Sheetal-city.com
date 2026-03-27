@@ -20,7 +20,7 @@ import com.SheetalCity.SheetalCity.services.UserLoginService;
 
 @RestController
 @RequestMapping("sheetal.city/auth")
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "http://${react.host.url}:${react.port}")
 public class AuthController {
 	
 	@Autowired

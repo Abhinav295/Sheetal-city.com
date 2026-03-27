@@ -4,6 +4,7 @@ import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +16,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 
 import com.SheetalCity.SheetalCity.dto.AdvancePaymentDTO;
 import com.SheetalCity.SheetalCity.dto.HouseMappingDTO;
@@ -31,7 +34,7 @@ import com.SheetalCity.SheetalCity.services.UserLoginService;
 
 @RestController
 @RequestMapping("sheetal.city")
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "http://${react.host.url}:${react.port}")
 public class Controllers {
 
 	@Autowired
@@ -48,6 +51,12 @@ public class Controllers {
 	
 	@Autowired
 	BillGenerationService billGenerationService;
+	
+	@Autowired
+	RestTemplate restTemplate;
+	
+	@Value("${coupon.url}")
+	String couponUrl;
 	
 	
 	
@@ -70,6 +79,11 @@ public class Controllers {
 	@GetMapping("/city/getAllCities")
 	public ResponseEntity<List<CityDetails>> getAllCities(){
 		System.out.println("-------------------Inside the City check----------------------");
+		
+		//int discount = restTemplate.getForObject(couponUrl, Integer.class);
+		
+		//System.out.println(discount);
+		
 		List<CityDetails>cityDetails = cityDataService.getCitiesDetails();
 		System.out.println("-------------------Inside the Health check----------------------");
 		return ResponseEntity.status(HttpStatus.OK).body(cityDetails);
@@ -111,6 +125,13 @@ public class Controllers {
 	public int advancePayment(@RequestBody AdvancePaymentDTO advanePayment) {
 		billGenerationService.generatePaymentBill(advanePayment);
 		return 9;
+	}
+	
+	@PostMapping("pay/generateDueForAllCustomers")
+	public ResponseEntity<?> generateDueForAllCust(@RequestParam Double averageUnits){
+		System.out.println(averageUnits);
+		billGenerationService.generateDueForAllCustomers(averageUnits);
+		return ResponseEntity.status(HttpStatus.OK).body("Its Done");
 	}
 	
 }

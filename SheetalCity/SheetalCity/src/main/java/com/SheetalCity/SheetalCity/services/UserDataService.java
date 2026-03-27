@@ -78,4 +78,7 @@ public class UserDataService {
 		userDataRepository.save(user);
 		return user;
 	}
+	public void updateAllUsers(List<UserData> allUsersToSave) {
+		userDataRepository.saveAll(allUsersToSave);
+	}
 }
